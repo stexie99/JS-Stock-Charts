@@ -58,7 +58,26 @@ async function main() {
             }]
         }
     });
+    new Chart(averagePriceChartCanvas.getContext('2d'),{
+        type:'pie',
+        data:{
+            labels: stocks.map(stock => stock.meta.symbol),
+            datasets: [{
+                label: 'Highest',
+                backgroundColor: stocks.map(stock => (
+                    getColor(stock.meta.symbol)
+                )),
+                borderColor: stocks.map(stock => (
+                    getColor(stock.meta.symbol)
+                )),
+                data: stocks.map(stock => (
+                    findAverage(stock.values)
+                ))
+            }]
+        }
 
+
+    })
     
     
     console.log(stocks[0].values)                                                  
@@ -74,4 +93,17 @@ function findHighest(values) {
     })
     return highest
 }
+function findAverage(values){
+    let count = 0
+    let total = 0
+    values.forEach(value=>{
+        total += parseInt(value.close)
+        count++
+    })
+    return total/count
+}
+
+
+
+
 main()
